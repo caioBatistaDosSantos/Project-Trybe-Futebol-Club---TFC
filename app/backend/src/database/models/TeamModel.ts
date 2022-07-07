@@ -3,8 +3,7 @@ import db from '.';
 
 class Teams extends Model {
   id!: number;
-  team_name!: string;
-  // ['team_name']!: string;
+  teamName!: string;
 }
 
 Teams.init({
@@ -14,9 +13,10 @@ Teams.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  team_name: {
+  teamName: {
     type: STRING,
     allowNull: false,
+    field: 'team_name',
   },
 }, {
   underscored: true,
