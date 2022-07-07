@@ -52,7 +52,7 @@ Matches.init({
   * */
 
 Matches.belongsTo(TeamModel, { foreignKey: 'home_team', as: 'id' });
-Matches.belongsTo(TeamModel, { foreignKey: 'camphome_team_goalsoB', as: 'team_name' });
+Matches.belongsTo(TeamModel, { foreignKey: 'home_team_goals', as: 'team_name' });
 
 // TeamModel.hasMany(Matches, { foreignKey: 'id', as: 'home_team' });
 // TeamModel.hasMany(Matches, { foreignKey: 'team_name', as: 'home_team_goals' });
