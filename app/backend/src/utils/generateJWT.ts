@@ -5,7 +5,7 @@ import { IUser } from '../interfaces/loginInterface';
 
 const secretKey = process.env.JWT_SECRET || 'secretKey';
 
-const generateJWT = (payload: IUser) => {
+const generateJwt = (payload: IUser) => {
   const token = jwt.sign({ data: payload }, secretKey, {
     expiresIn: '120m',
     algorithm: 'HS256',
@@ -14,4 +14,4 @@ const generateJWT = (payload: IUser) => {
   return token;
 };
 
-export default generateJWT;
+export default { generateJwt };

@@ -6,6 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { app } from '../app';
 import UserModel from '../database/models/UserModel';
+import JWT from '../utils/generateJWT';
 
 import { Response } from 'superagent';
 
@@ -14,9 +15,11 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe('Teste a rota POST "/login"', () => {
+  const TOKEN = 'TOKEN_FOR_TESTS';
+
   before(() => {
     sinon
-      .stub(UserModel, "create")
+      .stub(UserModel, "findOne")
       .resolves({
         username: 'Admin',
         role: 'admin',
@@ -24,10 +27,15 @@ describe('Teste a rota POST "/login"', () => {
         password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
           // senha: secret_admin
       } as UserModel);
+
+    sinon
+      .stub(JWT, "generateJwt")
+      .resolves(TOKEN);
   });
 
   after(()=>{
-    (UserModel.create as sinon.SinonStub).restore();
+    (UserModel.findOne as sinon.SinonStub).restore();
+    (JWT.generateJwt as sinon.SinonStub).restore();
   });
 
   it('Quando o login acontece corretamente', async () => {
@@ -37,7 +45,7 @@ describe('Teste a rota POST "/login"', () => {
         password: 'secret_admin',
       });
     expect(response.status).to.be.equal(StatusCodes.OK);
-    expect(response.body).to.be.eql({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZSI6IkFkbWluIiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJwYXNzd29yZCI6IiQyYSQwOCR4aS5IeGsxY3pBTzBuWlIuLkIzOTN1MTBhRUQwUlExTjNQQUVYUTdIeHRMaktQRVpCdS5QVyJ9LCJpYXQiOjE2NTcyNDQ3ODEsImV4cCI6MTY1NzI1MTk4MX0.oQkGxt7fEtGVjDBjd2L6PL00t6Elzs3xTc92Y-XZOdM" })
+    expect(response.body).to.be.eql({ token: TOKEN })
   });
 
   it('sem o campo "email"', async () => {
@@ -53,7 +61,6 @@ describe('Teste a rota POST "/login"', () => {
     const response = await chai.request(app).post('/login')
       .send({
         email: 'admin@admin.com',
-        password: 'secret_admin_incorrect',
       });
     expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
     expect(response.body).to.be.eql({ message: "All fields must be filled" })
@@ -63,6 +70,7 @@ describe('Teste a rota POST "/login"', () => {
     const response = await chai.request(app).post('/login')
       .send({
         email: 'admin@admin.com',
+        password: 'secret_admin_incorrect',
       });
     expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
     expect(response.body).to.be.eql({ message: "Incorrect email or password" })
@@ -72,18 +80,19 @@ describe('Teste a rota POST "/login"', () => {
 describe('Quando o login acontece incorretamente:', () => {
   before(() => {
     sinon
-      .stub(UserModel, "create")
-      .resolves(null as UserModel);
+      .stub(UserModel, "findOne")
+      .resolves(null as unknown as UserModel);
   });
 
   after(()=>{
-    (UserModel.create as sinon.SinonStub).restore();
+    (UserModel.findOne as sinon.SinonStub).restore();
   });
 
   it('com o campo "email" incorreto', async () => {
     const response = await chai.request(app).post('/login')
       .send({
-        email: 'admin@admin.com',
+        email: 'admin@admin.com_incorrect',
+        password: 'secret_admin',
       });
     expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
     expect(response.body).to.be.eql({ message: "Incorrect email or password" })

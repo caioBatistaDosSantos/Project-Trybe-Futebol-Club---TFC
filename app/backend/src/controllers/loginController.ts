@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import generateJWT from '../utils/generateJWT';
+import JWT from '../utils/generateJWT';
 import { IService } from '../interfaces/loginInterface';
 
 export default class Controller {
@@ -17,7 +17,8 @@ export default class Controller {
       }
       const user = await this.service.login({ email, password });
 
-      const token = generateJWT(user);
+      // test: await needed for method "stub"
+      const token = await JWT.generateJwt(user);
 
       return res.status(StatusCodes.OK).json({ token });
     } catch (error) {
