@@ -7,9 +7,9 @@ export interface IUser {
 }
 
 export interface IService {
-  create(data: Omit<IUser, 'id'>): Promise<IUser>;
+  login(data: Pick<IUser, 'email' | 'password'>): Promise<IUser>;
 }
 
 export interface IModel {
-  create(data: Omit<IUser, 'id'>): Promise<IUser>;
+  login(data: Omit<IUser, 'id' | 'username' | 'role'>): Promise<IUser>;
 }

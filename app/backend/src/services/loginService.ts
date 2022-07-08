@@ -6,8 +6,10 @@ export default class Service implements IService {
     this.model = model;
   }
 
-  async create(data: Omit<IUser, 'id'>): Promise<IUser> {
-    const entity = this.model.create(data);
+  async login(data: Pick<IUser, 'email' | 'password'>): Promise<IUser> {
+    const entity = this.model.findOne({
+      where: data,
+    });
 
     return entity;
   }
