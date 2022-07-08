@@ -9,7 +9,3 @@ export interface IUser {
 export interface IService {
   login(data: Pick<IUser, 'email' | 'password'>): Promise<IUser>;
 }
-
-export interface IModel {
-  login(data: Omit<IUser, 'id' | 'username' | 'role'>): Promise<IUser>;
-}

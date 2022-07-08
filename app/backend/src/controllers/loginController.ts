@@ -8,7 +8,7 @@ export default class Controller {
     this.service = service;
   }
 
-  async create(req: Request, res: Response, next: NextFunction) {
+  async create(req: Request, res: Response, _next: NextFunction) {
     try {
       console.log(StatusCodes);
       const { email, password } = req.body;
@@ -22,7 +22,8 @@ export default class Controller {
 
       return res.status(StatusCodes.CREATED).json({ token });
     } catch (error) {
-      next(error);
+      console.log(error);
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Incorrect email or password' });
     }
   }
 }
