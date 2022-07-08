@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import generateJWT from '../utils/generateJWT';
 import { IService } from '../interfaces/loginInterface';
 
 export default class Controller {
@@ -9,9 +10,11 @@ export default class Controller {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
-      const entity = await this.service.login({ email, password });
+      const user = await this.service.login({ email, password });
 
-      return res.status(201).json({ entity });
+      const token = generateJWT(user);
+
+      return res.status(201).json({ token });
     } catch (error) {
       next(error);
     }
