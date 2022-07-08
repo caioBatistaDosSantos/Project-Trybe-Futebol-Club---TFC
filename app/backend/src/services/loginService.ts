@@ -18,6 +18,9 @@ export default class Service implements IService {
 
     const decodePasword = decryptPassword(data.password, user.password);
 
+    console.log(decodePasword);
+    console.log(typeof decodePasword);
+
     if (decodePasword === false) {
       throw Error('deu ruin');
     }
