@@ -28,7 +28,7 @@ describe('Teste a rota POST "/login"', () => {
 
   after(()=>{
     (UserModel.create as sinon.SinonStub).restore();
-  })
+  });
 
   it('Quando o login acontece corretamente', async () => {
     const response = await chai.request(app).post('/login')
@@ -36,11 +36,11 @@ describe('Teste a rota POST "/login"', () => {
         email: 'admin@admin.com',
         password: 'secret_admin',
       });
-    expect(response.status).to.be.equal(StatusCodes.CREATED);
+    expect(response.status).to.be.equal(StatusCodes.OK);
     expect(response.body).to.be.eql({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJ1c2VybmFtZSI6IkFkbWluIiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJwYXNzd29yZCI6IiQyYSQwOCR4aS5IeGsxY3pBTzBuWlIuLkIzOTN1MTBhRUQwUlExTjNQQUVYUTdIeHRMaktQRVpCdS5QVyJ9LCJpYXQiOjE2NTcyNDQ3ODEsImV4cCI6MTY1NzI1MTk4MX0.oQkGxt7fEtGVjDBjd2L6PL00t6Elzs3xTc92Y-XZOdM" })
   });
 
-  it('Quando o login acontece incorretamente: sem o "email"', async () => {
+  it('sem o campo "email"', async () => {
     const response = await chai.request(app).post('/login')
       .send({
         password: 'secret_admin',
@@ -49,12 +49,43 @@ describe('Teste a rota POST "/login"', () => {
     expect(response.body).to.be.eql({ message: "All fields must be filled" })
   });
 
-  it('Quando o login acontece incorretamente: sem o campo "password"', async () => {
+  it('sem o campo "password"', async () => {
+    const response = await chai.request(app).post('/login')
+      .send({
+        email: 'admin@admin.com',
+        password: 'secret_admin_incorrect',
+      });
+    expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
+    expect(response.body).to.be.eql({ message: "All fields must be filled" })
+  });
+
+  it('com o campo "password" incorreto', async () => {
     const response = await chai.request(app).post('/login')
       .send({
         email: 'admin@admin.com',
       });
-    expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
-    expect(response.body).to.be.eql({ message: "All fields must be filled" })
+    expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+    expect(response.body).to.be.eql({ message: "Incorrect email or password" })
+  });
+});
+
+describe('Quando o login acontece incorretamente:', () => {
+  before(() => {
+    sinon
+      .stub(UserModel, "create")
+      .resolves(null as UserModel);
+  });
+
+  after(()=>{
+    (UserModel.create as sinon.SinonStub).restore();
+  });
+
+  it('com o campo "email" incorreto', async () => {
+    const response = await chai.request(app).post('/login')
+      .send({
+        email: 'admin@admin.com',
+      });
+    expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+    expect(response.body).to.be.eql({ message: "Incorrect email or password" })
   });
 });

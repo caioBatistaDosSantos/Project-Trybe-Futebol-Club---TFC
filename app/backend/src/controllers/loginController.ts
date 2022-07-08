@@ -10,7 +10,6 @@ export default class Controller {
 
   async create(req: Request, res: Response, _next: NextFunction) {
     try {
-      console.log(StatusCodes);
       const { email, password } = req.body;
 
       if (!email || !password) {
@@ -20,10 +19,10 @@ export default class Controller {
 
       const token = generateJWT(user);
 
-      return res.status(StatusCodes.CREATED).json({ token });
+      return res.status(StatusCodes.OK).json({ token });
     } catch (error) {
       console.log(error);
-      return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Incorrect email or password' });
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Incorrect email or password' });
     }
   }
 }
