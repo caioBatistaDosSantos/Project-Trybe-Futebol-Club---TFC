@@ -8,6 +8,7 @@ export default class Service implements IService {
   }
 
   async login(data: Pick<IUser, 'email' | 'password'>): Promise<IUser> {
+    console.log('chegou service')
     const user = await this.model.findOne({
       where: { email: data.email },
     });
@@ -17,9 +18,6 @@ export default class Service implements IService {
     }
 
     const decodePasword = decryptPassword(data.password, user.password);
-
-    console.log(decodePasword);
-    console.log(typeof decodePasword);
 
     if (decodePasword === false) {
       throw Error('deu ruin');

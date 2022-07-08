@@ -9,6 +9,7 @@ export default class Controller {
 
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      console.log('chegou')
       const { email, password } = req.body;
       const user = await this.service.login({ email, password });
 
