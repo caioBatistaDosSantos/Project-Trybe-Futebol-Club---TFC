@@ -1,5 +1,6 @@
 import UserModel from '../database/models/UserModel';
 import { IUser, IService } from '../interfaces/loginInterface';
+import { decryptPassword } from '../utils/hashPassword';
 
 export default class Service implements IService {
   constructor(private model = UserModel) {
@@ -7,10 +8,20 @@ export default class Service implements IService {
   }
 
   async login(data: Pick<IUser, 'email' | 'password'>): Promise<IUser> {
-    const entity = this.model.findOne({
-      where: data,
+    const user = await this.model.findOne({
+      where: { email: data.email },
     });
 
-    return entity;
+    if (!user) {
+      throw Error('deu ruin');
+    }
+
+    const decodePasword = decryptPassword(data.password, user.password);
+
+    if (decodePasword === false) {
+      throw Error('deu ruin');
+    }
+
+    return user;
   }
 }
