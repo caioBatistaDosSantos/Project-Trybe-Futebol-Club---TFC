@@ -121,17 +121,38 @@ describe('Teste a rota GET "/login/validate"', () => {
     (JWT.verifyToken as sinon.SinonStub).restore();
   });
 
-  it.only('Quando o login acontece corretamente', async () => {
+  it('Quando o validateLogin acontece corretamente', async () => {
     const response = await chai.request(app).get('/login/validate')
-      .set('authorization', TOKEN).end();
+      .set('authorization', TOKEN);
     expect(response.status).to.be.equal(StatusCodes.OK);
     expect(response.body).to.be.eql({ role: 'admin' })
   });
 
-  it('Quando o login acontece corretamente', async () => {
+  it('Quando a requisição é faita sem o "token"', async () => {
+    const response = await chai.request(app).get('/login/validate');
+    expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+    expect(response.body).to.be.eql({ message: 'Token not found' })
+  });
+});
+
+describe('Teste a rota GET "/login/validate"', () => {
+  const INVALID_TOKEN = 'ivalid Token';
+  const DECODE = () => {throw Error};
+
+  before(() => {
+    sinon
+      .stub(JWT, "verifyToken")
+        .resolves(DECODE);
+  });
+
+  after(()=>{
+    (JWT.verifyToken as sinon.SinonStub).restore();
+  });
+
+  it.only('Quando a requisição é faita com o "token" invalido', async () => {
     const response = await chai.request(app).get('/login/validate')
-      .set('authorization', TOKEN).end();
-    expect(response.status).to.be.equal(StatusCodes.OK);
-    expect(response.body).to.be.eql({ role: 'admin' })
+    .set('authorization', INVALID_TOKEN);
+    expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+    expect(response.body).to.be.eql({ message: 'Expired or invalid token' })
   });
 });

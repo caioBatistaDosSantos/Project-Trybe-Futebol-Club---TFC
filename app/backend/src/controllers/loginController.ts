@@ -30,7 +30,8 @@ export default class Controller {
   async validateLogin(req: Request, res: Response, _next: NextFunction) {
     const token = req.headers.authorization;
 
-    const decoded = JWT.verifyToken(token as string);
+    // test: await needed for method "stub"
+    const decoded = await JWT.verifyToken(token as string);
 
     const user = await this.service.validateLogin(decoded as IDataUser);
 

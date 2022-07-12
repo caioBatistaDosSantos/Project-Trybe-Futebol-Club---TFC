@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import JWT from '../utils/JWT';
 
-export default function validateToken(
+export default async function validateToken(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -14,7 +14,8 @@ export default function validateToken(
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token not found' });
     }
 
-    JWT.verifyToken(token);
+    // test: await needed for method "stub"
+    await JWT.verifyToken(token);
 
     next();
   } catch (error) {
