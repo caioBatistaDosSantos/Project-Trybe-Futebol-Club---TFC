@@ -14,19 +14,20 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Teste a rota POST "/login"', () => {
-  const TOKEN = 'TOKEN_FOR_TESTS';
+const USER = {
+  id: 1,
+  username: 'Admin',
+  role: 'admin',
+  email: 'admin@admin.com',
+  password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
+};
+const TOKEN = 'TOKEN_FOR_TESTS';
 
+describe('Teste a rota POST "/login"', () => {
   before(() => {
     sinon
       .stub(UserModel, "findOne")
-      .resolves({
-        username: 'Admin',
-        role: 'admin',
-        email: 'admin@admin.com',
-        password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
-          // senha: secret_admin
-      } as UserModel);
+      .resolves(USER as UserModel);
 
     sinon
       .stub(JWT, "generateJwt")
@@ -100,36 +101,37 @@ describe('Quando o login acontece incorretamente:', () => {
 });
 
 describe('Teste a rota GET "/login/validate"', () => {
-  const DECODE = 'admin';
+  
+  const DECODE = {
+    data: USER, 
+  };
 
   before(() => {
     sinon
       .stub(UserModel, "findOne")
-      .resolves({
-        username: 'Admin',
-        role: 'admin',
-        email: 'admin@admin.com',
-        password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
-          // senha: secret_admin
-      } as UserModel);
+        .resolves(USER as UserModel);
 
     sinon
-      .stub(JWT, "generateJwt")
-      .resolves(DECODE);
+      .stub(JWT, "verifyToken")
+        .resolves(DECODE);
   });
 
   after(()=>{
     (UserModel.findOne as sinon.SinonStub).restore();
-    (JWT.generateJwt as sinon.SinonStub).restore();
+    (JWT.verifyToken as sinon.SinonStub).restore();
+  });
+
+  it.only('Quando o login acontece corretamente', async () => {
+    const response = await chai.request(app).get('/login/validate')
+      .set('authorization', TOKEN).end();
+    expect(response.status).to.be.equal(StatusCodes.OK);
+    expect(response.body).to.be.eql({ role: 'admin' })
   });
 
   it('Quando o login acontece corretamente', async () => {
     const response = await chai.request(app).get('/login/validate')
-      .send({
-        email: 'admin@admin.com',
-        password: 'secret_admin',
-      });
+      .set('authorization', TOKEN).end();
     expect(response.status).to.be.equal(StatusCodes.OK);
-    expect(response.body).to.be.eql({ role: DECODE })
+    expect(response.body).to.be.eql({ role: 'admin' })
   });
 });

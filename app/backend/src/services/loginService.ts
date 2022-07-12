@@ -1,5 +1,5 @@
 import UserModel from '../database/models/UserModel';
-import { IUser, IService } from '../interfaces/loginInterface';
+import { IUser, IService, IDataUser } from '../interfaces/loginInterface';
 import { decryptPassword } from '../utils/hashPassword';
 
 export default class Service implements IService {
@@ -25,7 +25,7 @@ export default class Service implements IService {
     return user;
   }
 
-  async validateLogin(data: Omit<IUser, 'id'>): Promise<IUser> {
+  async validateLogin({ data }: IDataUser): Promise<IUser> {
     const user = await this.model.findOne({
       where: { email: data.email },
     });

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import JWT from '../utils/JWT';
-import { IUser, IService } from '../interfaces/loginInterface';
+import { IDataUser, IService } from '../interfaces/loginInterface';
 
 export default class Controller {
   constructor(private service: IService) {
@@ -32,7 +32,7 @@ export default class Controller {
 
     const decoded = JWT.verifyToken(token as string);
 
-    const user = await this.service.validateLogin(decoded as Omit<IUser, 'id'>);
+    const user = await this.service.validateLogin(decoded as IDataUser);
 
     return res.status(StatusCodes.OK).json({ role: user.role });
   }

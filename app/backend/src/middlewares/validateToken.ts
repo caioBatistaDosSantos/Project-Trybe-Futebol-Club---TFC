@@ -2,7 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import JWT from '../utils/JWT';
 
-export default function jwtVerifier(
+export default function validateToken(
   req: Request,
   res: Response,
   next: NextFunction,

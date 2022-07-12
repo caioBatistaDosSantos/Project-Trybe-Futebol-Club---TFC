@@ -17,8 +17,6 @@ const generateJwt = (payload: IUser) => {
 const verifyToken = (token: string) => {
   const decodeToken = jwt.verify(token, secretKey);
 
-  console.log(decodeToken);
-
   return decodeToken;
 };
 

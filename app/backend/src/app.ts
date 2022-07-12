@@ -1,5 +1,6 @@
 import * as express from 'express';
 import loginFactory from './factory/index';
+import validateToken from './middlewares/validateToken';
 
 class App {
   public app: express.Express;
@@ -26,6 +27,10 @@ class App {
 
     this.app.post('/login', (req, res, next) => {
       loginFactory().login(req, res, next);
+    });
+
+    this.app.get('/login/validate', validateToken, (req, res, next) => {
+      loginFactory().validateLogin(req, res, next);
     });
   }
 
