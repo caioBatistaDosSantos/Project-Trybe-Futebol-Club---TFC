@@ -8,4 +8,5 @@ export interface IUser {
 
 export interface IService {
   login(data: Pick<IUser, 'email' | 'password'>): Promise<IUser>;
+  validateLogin(data: Omit<IUser, 'id'>): Promise<IUser>;
 }

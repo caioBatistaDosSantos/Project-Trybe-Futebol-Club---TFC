@@ -24,4 +24,12 @@ export default class Service implements IService {
 
     return user;
   }
+
+  async validateLogin(data: Omit<IUser, 'id'>): Promise<IUser> {
+    const user = await this.model.findOne({
+      where: { email: data.email },
+    });
+
+    return user as IUser;
+  }
 }
