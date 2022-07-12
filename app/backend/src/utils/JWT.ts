@@ -14,4 +14,12 @@ const generateJwt = (payload: IUser) => {
   return token;
 };
 
-export default { generateJwt };
+const verifyToken = (token: string) => {
+  const decodeToken = jwt.verify(token, secretKey);
+
+  console.log(decodeToken);
+
+  return decodeToken;
+};
+
+export default { generateJwt, verifyToken };

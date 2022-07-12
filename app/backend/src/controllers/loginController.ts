@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import JWT from '../utils/generateJWT';
-import { IService } from '../interfaces/loginInterface';
+import JWT from '../utils/JWT';
+import { IUser, IService } from '../interfaces/loginInterface';
 
 export default class Controller {
   constructor(private service: IService) {
     this.service = service;
   }
 
-  async create(req: Request, res: Response, _next: NextFunction) {
+  async login(req: Request, res: Response, _next: NextFunction) {
     try {
       const { email, password } = req.body;
 
@@ -25,5 +25,15 @@ export default class Controller {
       console.log(error);
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Incorrect email or password' });
     }
+  }
+
+  async validateLogin(req: Request, res: Response, _next: NextFunction) {
+    const token = req.headers.authorization;
+
+    const decoded = JWT.verifyToken(token as string);
+
+    const user = await this.service.validateLogin(decoded as Omit<IUser, 'id'>);
+
+    return res.status(StatusCodes.OK).json({ role: user.role });
   }
 }

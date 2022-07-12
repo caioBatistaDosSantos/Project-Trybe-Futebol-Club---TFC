@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { app } from '../app';
 import UserModel from '../database/models/UserModel';
-import JWT from '../utils/generateJWT';
+import JWT from '../utils/JWT';
 
 import { Response } from 'superagent';
 

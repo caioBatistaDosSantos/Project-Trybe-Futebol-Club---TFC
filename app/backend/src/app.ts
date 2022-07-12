@@ -25,7 +25,7 @@ class App {
     this.app.use(accessControl);
 
     this.app.post('/login', (req, res, next) => {
-      loginFactory().create(req, res, next);
+      loginFactory().login(req, res, next);
     });
   }
 

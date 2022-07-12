@@ -1,9 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
-import * as jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
-import 'dotenv/config';
-
-const secretKey = process.env.JWT_SECRET || 'secretKey';
+import JWT from '../utils/JWT';
 
 export default function jwtVerifier(
   req: Request,
@@ -17,7 +14,7 @@ export default function jwtVerifier(
       return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token not found' });
     }
 
-    jwt.verify(token, secretKey);
+    JWT.verifyToken(token);
 
     next();
   } catch (error) {
