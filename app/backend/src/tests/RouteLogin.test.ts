@@ -135,7 +135,7 @@ describe('Teste a rota GET "/login/validate"', () => {
   });
 });
 
-describe('Teste a rota GET "/login/validate"', () => {
+describe('Quando o validateLogin acontece incorretamente:', () => {
   const INVALID_TOKEN = 'ivalid Token';
   const DECODE = () => {throw Error};
 
