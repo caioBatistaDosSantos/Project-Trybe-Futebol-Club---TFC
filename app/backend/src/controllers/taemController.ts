@@ -12,4 +12,12 @@ export default class Controller {
 
     return res.status(StatusCodes.OK).json(teams);
   }
+
+  async getTeamById(req: Request, res: Response, _next: NextFunction) {
+    const { id } = req.params;
+
+    const team = await this.service.getTeamById(id);
+
+    return res.status(StatusCodes.OK).json(team);
+  }
 }
