@@ -1,8 +1,8 @@
-export interface ITeams {
+export interface ITeam {
   id: number;
   teamName: string;
 }
 
 export interface IService {
-  getAllTeams(): Promise<ITeams[]>;
+  getAllTeams(): Promise<ITeam[]>;
 }
