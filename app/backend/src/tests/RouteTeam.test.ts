@@ -59,7 +59,7 @@ describe('Teste a rota GET "/teams/:id"', () => {
     (TeamModel.findByPk as sinon.SinonStub).restore();
   });
 
-  it.only('Quando o GET "/teams/:id" acontece corretamente', async () => {
+  it('Quando o GET "/teams/:id" acontece corretamente', async () => {
     const response = await chai.request(app).get('/teams/:id');
     expect(response.status).to.be.equal(StatusCodes.OK);
     expect(response.body).to.be.eql(TEAM)
