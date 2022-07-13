@@ -19,3 +19,5 @@ routes.get('/teams/:id', (req, res, next) => {
 routes.post('/login', (req, res, next) => {
   loginFactory().login(req, res, next);
 });
+
+export default routes;
