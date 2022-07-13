@@ -32,14 +32,14 @@ describe('Teste a rota GET "/teams"', () => {
   before(() => {
     sinon
       .stub(TeamModel, "findAll")
-      .resolves(TEAMS as TeamModel);
+      .resolves(TEAMS as TeamModel[]);
   });
 
   after(()=>{
     (TeamModel.findAll as sinon.SinonStub).restore();
   });
 
-  it.only('Quando o GET acontece corretamente', async () => {
+  it.only('Quando o GET "/teams" acontece corretamente', async () => {
     const response = await chai.request(app).post('/teams');
     expect(response.status).to.be.equal(StatusCodes.OK);
     expect(response.body).to.be.eql(TEAMS)
