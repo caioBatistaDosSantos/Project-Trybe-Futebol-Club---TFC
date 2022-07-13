@@ -13,11 +13,13 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
+const TEAM = {
+  id: 1,
+  teamName: "Avaí/Kindermann"
+}
+
 const TEAMS = [
-	{
-		id: 1,
-		teamName: "Avaí/Kindermann"
-	},
+	TEAM,
 	{
 		id: 2,
 		teamName: "Bahia"
@@ -39,37 +41,27 @@ describe('Teste a rota GET "/teams"', () => {
     (TeamModel.findAll as sinon.SinonStub).restore();
   });
 
-  it.only('Quando o GET "/teams" acontece corretamente', async () => {
-    const response = await chai.request(app).post('/teams');
+  it('Quando o GET "/teams" acontece corretamente', async () => {
+    const response = await chai.request(app).get('/teams');
     expect(response.status).to.be.equal(StatusCodes.OK);
     expect(response.body).to.be.eql(TEAMS)
   });
+});
 
-  // it('sem o campo "email"', async () => {
-  //   const response = await chai.request(app).post('/login')
-  //     .send({
-  //       password: 'secret_admin',
-  //     });
-  //   expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
-  //   expect(response.body).to.be.eql({ message: "All fields must be filled" })
-  // });
+describe('Teste a rota GET "/teams/:id"', () => {
+  before(() => {
+    sinon
+      .stub(TeamModel, "findByPk")
+      .resolves(TEAM as TeamModel);
+  });
 
-  // it('sem o campo "password"', async () => {
-  //   const response = await chai.request(app).post('/login')
-  //     .send({
-  //       email: 'admin@admin.com',
-  //     });
-  //   expect(response.status).to.be.equal(StatusCodes.BAD_REQUEST);
-  //   expect(response.body).to.be.eql({ message: "All fields must be filled" })
-  // });
+  after(()=>{
+    (TeamModel.findByPk as sinon.SinonStub).restore();
+  });
 
-  // it('com o campo "password" incorreto', async () => {
-  //   const response = await chai.request(app).post('/login')
-  //     .send({
-  //       email: 'admin@admin.com',
-  //       password: 'secret_admin_incorrect',
-  //     });
-  //   expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
-  //   expect(response.body).to.be.eql({ message: "Incorrect email or password" })
-  // });
+  it('Quando o GET "/teams/:id" acontece corretamente', async () => {
+    const response = await chai.request(app).get('/teams/:id');
+    expect(response.status).to.be.equal(StatusCodes.OK);
+    expect(response.body).to.be.eql(TEAM)
+  });
 });
