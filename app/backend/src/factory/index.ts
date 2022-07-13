@@ -2,6 +2,8 @@ import LoginController from '../controllers/loginController';
 import LoginService from '../services/loginService';
 import TeamController from '../controllers/taemController';
 import TeamService from '../services/teamService';
+import MatchContoller from '../controllers/matchContoller';
+import MatchSerice from '../services/matchSerice';
 
 export const loginFactory = () => {
   const loginService = new LoginService();
@@ -15,4 +17,11 @@ export const teamFactory = () => {
   const teamController = new TeamController(teamService);
 
   return teamController;
+};
+
+export const matchFactory = () => {
+  const matchSerice = new MatchSerice();
+  const matchContoller = new MatchContoller(matchSerice);
+
+  return matchContoller;
 };
