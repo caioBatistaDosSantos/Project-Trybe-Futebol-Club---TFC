@@ -1,6 +1,5 @@
 import * as express from 'express';
-import { loginFactory, teamFactory } from './factory/index';
-import validateToken from './middlewares/validateToken';
+import routes from './routes';
 
 class App {
   public app: express.Express;
@@ -24,18 +23,7 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-
-    this.app.get('/login/validate', validateToken, (req, res, next) => {
-      loginFactory().validateLogin(req, res, next);
-    });
-
-    this.app.get('/teams', (req, res, next) => {
-      teamFactory().getAllTeams(req, res, next);
-    });
-
-    this.app.post('/login', (req, res, next) => {
-      loginFactory().login(req, res, next);
-    });
+    this.app.use(routes);
   }
 
   public start(PORT: string | number):void {
