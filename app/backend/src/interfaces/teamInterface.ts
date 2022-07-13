@@ -5,4 +5,5 @@ export interface ITeam {
 
 export interface IService {
   getAllTeams(): Promise<ITeam[]>;
+  getTeamById(): Promise<ITeam>;
 }
