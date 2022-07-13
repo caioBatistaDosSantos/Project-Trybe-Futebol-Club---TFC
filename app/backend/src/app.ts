@@ -1,5 +1,5 @@
 import * as express from 'express';
-import loginFactory from './factory/index';
+import { loginFactory, teamFactory } from './factory/index';
 import validateToken from './middlewares/validateToken';
 
 class App {
