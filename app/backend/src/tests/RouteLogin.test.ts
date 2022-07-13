@@ -149,7 +149,7 @@ describe('Teste a rota GET "/login/validate"', () => {
     (JWT.verifyToken as sinon.SinonStub).restore();
   });
 
-  it.only('Quando a requisição é faita com o "token" invalido', async () => {
+  it('Quando a requisição é faita com o "token" invalido', async () => {
     const response = await chai.request(app).get('/login/validate')
     .set('authorization', INVALID_TOKEN);
     expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
