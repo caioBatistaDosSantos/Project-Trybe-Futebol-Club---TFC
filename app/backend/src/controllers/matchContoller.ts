@@ -8,7 +8,9 @@ export default class Controller {
   }
 
   async getAllMatches(req: Request, res: Response, _next: NextFunction) {
-    const matches = await this.service.getAllMatches();
+    const { inProgress } = req.query;
+
+    const matches = await this.service.getAllMatches(inProgress as string | undefined);
 
     return res.status(StatusCodes.OK).json(matches);
   }
