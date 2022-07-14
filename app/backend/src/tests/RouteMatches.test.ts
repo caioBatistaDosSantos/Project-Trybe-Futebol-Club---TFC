@@ -48,7 +48,7 @@ describe('Teste a rota GET "/matches"', () => {
   before(() => {
     sinon
       .stub(MatchesModel, "findAll")
-      .resolves(MATCHES as MatchesModel[]);
+      .resolves(MATCHES as unknown as MatchesModel[]);
   });
 
   after(()=>{
