@@ -14,5 +14,5 @@ export interface IMatches {
 }
 
 export interface IService {
-  getAllMatches(): Promise<IMatches[]>;
+  getAllMatches(InProgress: string | undefined): Promise<IMatches[]>;
 }

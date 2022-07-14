@@ -7,7 +7,20 @@ export default class Service implements IService {
     this.model = model;
   }
 
-  async getAllMatches(): Promise<IMatches[]> {
+  async getAllMatches(inProgress: string | undefined): Promise<IMatches[]> {
+    if (inProgress) {
+      const matches = await this.model.findAll({
+        include: [
+          { model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+          { model: TeamModel, as: 'teamAway', attributes: { exclude: ['id'] } },
+        ],
+        ...(inProgress === 'true'
+          ? { where: { inProgress: true } } : { where: { inProgress: false } }),
+      });
+
+      return matches as unknown as IMatches[];
+    }
+
     const matches = await this.model.findAll({
       include: [
         { model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
