@@ -7,7 +7,7 @@ export default class Controller {
     this.service = service;
   }
 
-  async getAllTeams(req: Request, res: Response, _next: NextFunction) {
+  async getAllMatches(req: Request, res: Response, _next: NextFunction) {
     const matches = await this.service.getAllMatches();
 
     return res.status(StatusCodes.OK).json(matches);

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { loginFactory, teamFactory } from '../factory/index';
+import { loginFactory, teamFactory, matchFactory } from '../factory/index';
 import validateToken from '../middlewares/validateToken';
 
 const routes = Router();
@@ -14,6 +14,10 @@ routes.get('/teams', (req, res, next) => {
 
 routes.get('/teams/:id', (req, res, next) => {
   teamFactory().getTeamById(req, res, next);
+});
+
+routes.get('/matches', (req, res, next) => {
+  matchFactory().getAllMatches(req, res, next);
 });
 
 routes.post('/login', (req, res, next) => {

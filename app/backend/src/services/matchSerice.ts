@@ -9,7 +9,10 @@ export default class Service implements IService {
 
   async getAllMatches(): Promise<IMatches[]> {
     const matches = await this.model.findAll({
-      include: [{ model: TeamModel, as: 'teams' }],
+      include: [
+        { model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] } },
+        { model: TeamModel, as: 'teamAway', attributes: { exclude: ['id'] } },
+      ],
     });
 
     return matches as unknown as IMatches[];
