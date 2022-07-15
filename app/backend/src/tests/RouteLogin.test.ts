@@ -137,22 +137,11 @@ describe('Teste a rota GET "/login/validate"', () => {
 
 describe('Quando o validateLogin acontece incorretamente:', () => {
   const INVALID_TOKEN = 'ivalid Token';
-  const DECODE = () => {throw Error};
-
-  before(() => {
-    sinon
-      .stub(JWT, "verifyToken")
-        .resolves(DECODE);
-  });
-
-  after(()=>{
-    (JWT.verifyToken as sinon.SinonStub).restore();
-  });
 
   it('Quando a requisição é faita com o "token" invalido', async () => {
     const response = await chai.request(app).get('/login/validate')
     .set('authorization', INVALID_TOKEN);
     expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
-    expect(response.body).to.be.eql({ message: 'Expired or invalid token' })
+    expect(response.body).to.be.eql({ message: 'Token must be a valid token' })
   });
 });
