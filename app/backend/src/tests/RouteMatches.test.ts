@@ -6,6 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { app } from '../app';
 import MatchesModel from '../database/models/MatchesModel';
+import JWT from '../utils/JWT';
 
 import { Response } from 'superagent';
 
@@ -161,6 +162,8 @@ describe('Teste a rota GET "/matches?inProgress=false"', () => {
 });
 
 describe.only('Teste a rota POST "/matches"', () => {
+  const TOKEN = 'TOKEN_FOR_TESTS';
+
   const MATCHES = {
     id: 1,
     homeTeam: 16,
@@ -174,6 +177,10 @@ describe.only('Teste a rota POST "/matches"', () => {
     sinon
       .stub(MatchesModel, "create")
       .resolves(MATCHES as unknown as MatchesModel);
+
+    sinon
+      .stub(JWT, "verifyToken")
+        .resolves(TOKEN);
   });
 
   after(()=>{
@@ -187,8 +194,9 @@ describe.only('Teste a rota POST "/matches"', () => {
         homeTeamGoals: 2,
         awayTeam: 8,
         awayTeamGoals: 2,
-      });
-    expect(response.status).to.be.equal(StatusCodes.OK);
+      })
+      .set('authorization', TOKEN);
+    expect(response.status).to.be.equal(StatusCodes.CREATED);
     expect(response.body).to.be.eql(MATCHES)
   });
 });

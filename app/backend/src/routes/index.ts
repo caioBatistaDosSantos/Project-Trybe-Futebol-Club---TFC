@@ -24,7 +24,7 @@ routes.post('/login', (req, res, next) => {
   loginFactory().login(req, res, next);
 });
 
-routes.post('/matches', (req, res, next) => {
+routes.post('/matches', validateToken, (req, res, next) => {
   matchFactory().createMatch(req, res, next);
 });
 
