@@ -42,4 +42,11 @@ export default class Service implements IService {
 
     return newMatch as unknown as IMatch;
   }
+
+  async finishMatch(id: string): Promise<void> {
+    await this.model.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+  }
 }
