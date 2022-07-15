@@ -14,4 +14,12 @@ export default class Controller {
 
     return res.status(StatusCodes.OK).json(matches);
   }
+
+  async createMatch(req: Request, res: Response, _next: NextFunction) {
+    const data = req.body;
+
+    const newMatch = await this.service.createMatch(data);
+
+    return res.status(StatusCodes.OK).json(newMatch);
+  }
 }
