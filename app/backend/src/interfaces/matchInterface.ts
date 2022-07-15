@@ -19,4 +19,5 @@ export interface IMatches extends IMatch {
 export interface IService {
   getAllMatches(InProgress: string | undefined): Promise<IMatches[]>;
   createMatch(data: Omit<IMatch, 'id'>): Promise<IMatch>;
+  finishMatch(id: string): Promise<void>;
 }
