@@ -1,10 +1,13 @@
-export interface IMatches {
+export interface IMatch {
   id: number;
   homeTeam: number;
   homeTeamGoals: number;
   awayTeam: number;
   awayTeamGoals: number;
   inProgress: boolean;
+}
+
+export interface IMatches extends IMatch {
   teamHome: {
     teamName: string,
   };
@@ -15,4 +18,5 @@ export interface IMatches {
 
 export interface IService {
   getAllMatches(InProgress: string | undefined): Promise<IMatches[]>;
+  getAllMatches(data: Omit<IMatch, 'id'>): Promise<IMatch>;
 }
