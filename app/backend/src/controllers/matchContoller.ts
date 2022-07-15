@@ -20,6 +20,6 @@ export default class Controller {
 
     const newMatch = await this.service.createMatch(data);
 
-    return res.status(StatusCodes.OK).json(newMatch);
+    return res.status(StatusCodes.CREATED).json(newMatch);
   }
 }
