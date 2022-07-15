@@ -159,3 +159,36 @@ describe('Teste a rota GET "/matches?inProgress=false"', () => {
     expect(response.body).to.be.eql(MATCHES)
   });
 });
+
+describe.only('Teste a rota POST "/matches"', () => {
+  const MATCHES = {
+    id: 1,
+    homeTeam: 16,
+    homeTeamGoals: 2,
+    awayTeam: 8,
+    awayTeamGoals: 2,
+    inProgress: true,
+  };
+
+  before(() => {
+    sinon
+      .stub(MatchesModel, "create")
+      .resolves(MATCHES as unknown as MatchesModel);
+  });
+
+  after(()=>{
+    (MatchesModel.create as sinon.SinonStub).restore();
+  });
+
+  it('Quando o POST "/matches" acontece corretamente', async () => {
+    const response = await chai.request(app).post('/matches')
+      .send({
+        homeTeam: 16,
+        homeTeamGoals: 2,
+        awayTeam: 8,
+        awayTeamGoals: 2,
+      });
+    expect(response.status).to.be.equal(StatusCodes.OK);
+    expect(response.body).to.be.eql(MATCHES)
+  });
+});
