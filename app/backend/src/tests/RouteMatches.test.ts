@@ -6,6 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { app } from '../app';
 import MatchesModel from '../database/models/MatchesModel';
+import TeamModel from '../database/models/TeamModel';
 import JWT from '../utils/JWT';
 
 import { Response } from 'superagent';
@@ -173,10 +174,19 @@ describe('Teste a rota POST "/matches"', () => {
     inProgress: true,
   };
 
+  const TEAM = {
+    id: 1,
+    teamName: "Avaí/Kindermann"
+  }
+
   before(() => {
     sinon
       .stub(MatchesModel, "create")
       .resolves(MATCHES as unknown as MatchesModel);
+
+    sinon
+      .stub(TeamModel, "findByPk")
+      .resolves(TEAM as TeamModel)
 
     sinon
       .stub(JWT, "verifyToken")
@@ -185,6 +195,8 @@ describe('Teste a rota POST "/matches"', () => {
 
   after(()=>{
     (MatchesModel.create as sinon.SinonStub).restore();
+    (TeamModel.findByPk as sinon.SinonStub).restore();
+    (JWT.verifyToken as sinon.SinonStub).restore();
   });
 
   it('Quando o POST "/matches" acontece corretamente', async () => {
@@ -200,7 +212,7 @@ describe('Teste a rota POST "/matches"', () => {
     expect(response.body).to.be.eql(MATCHES)
   });
 
-  it.only('Quando os times são iguais', async () => {
+  it('Quando os times são iguais', async () => {
     const response = await chai.request(app).post('/matches')
       .send({
         homeTeam: 16,
@@ -210,9 +222,40 @@ describe('Teste a rota POST "/matches"', () => {
       })
       .set('authorization', TOKEN);
     expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
-    expect(response.body).to.be.eql({ message: 'It is not possible to create a match with two equal teams' })
+    expect(response.body).to.be.eql({ message: 'It is not possible to create a match with two equal teams' });
   });
 });
+
+describe('Quando o POST "/matches" acontece incorretamente', () => {
+  const TOKEN = 'TOKEN_FOR_TESTS';
+
+  before(() => {
+    sinon
+      .stub(TeamModel, "findByPk")
+      .resolves(null)
+
+    sinon
+      .stub(JWT, "verifyToken")
+        .resolves(TOKEN);
+  });
+
+  after(()=>{
+    (TeamModel.findByPk as sinon.SinonStub).restore();
+  });
+  
+  it('Quando os times não existem', async () => {
+    const response = await chai.request(app).post('/matches')
+      .send({
+        homeTeam: 10000,
+        homeTeamGoals: 2,
+        awayTeam: -1,
+        awayTeamGoals: 2,
+      })
+      .set('authorization', TOKEN);
+    expect(response.status).to.be.equal(StatusCodes.NOT_FOUND);
+    expect(response.body).to.be.eql({ message: 'There is no team with such id!' });
+  });
+})
 
 // describe.only('Teste a rota PATCH "/matches/:id/finish"', () => {
 
