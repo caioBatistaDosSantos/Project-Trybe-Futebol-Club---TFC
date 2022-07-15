@@ -19,6 +19,6 @@ export default async function validateToken(
 
     next();
   } catch (error) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Expired or invalid token' });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token must be a valid token' });
   }
 }
