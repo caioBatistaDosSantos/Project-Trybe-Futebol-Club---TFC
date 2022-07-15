@@ -199,6 +199,19 @@ describe('Teste a rota POST "/matches"', () => {
     expect(response.status).to.be.equal(StatusCodes.CREATED);
     expect(response.body).to.be.eql(MATCHES)
   });
+
+  it.only('Quando os times são iguais', async () => {
+    const response = await chai.request(app).post('/matches')
+      .send({
+        homeTeam: 16,
+        homeTeamGoals: 2,
+        awayTeam: 16,
+        awayTeamGoals: 2,
+      })
+      .set('authorization', TOKEN);
+    expect(response.status).to.be.equal(StatusCodes.UNAUTHORIZED);
+    expect(response.body).to.be.eql({ message: 'It is not possible to create a match with two equal teams' })
+  });
 });
 
 // describe.only('Teste a rota PATCH "/matches/:id/finish"', () => {
