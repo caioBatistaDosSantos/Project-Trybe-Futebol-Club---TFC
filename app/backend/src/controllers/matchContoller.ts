@@ -18,6 +18,12 @@ export default class Controller {
   async createMatch(req: Request, res: Response, _next: NextFunction) {
     const data = req.body;
 
+    if (data.homeTeam === data.awayTeam) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: 'It is not possible to create a match with two equal teams' });
+    }
+
     const newMatch = await this.service.createMatch(data);
 
     return res.status(StatusCodes.CREATED).json(newMatch);
