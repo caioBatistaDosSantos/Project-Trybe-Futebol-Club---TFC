@@ -28,4 +28,8 @@ routes.post('/matches', validateToken, (req, res, next) => {
   matchFactory().createMatch(req, res, next);
 });
 
+routes.patch('/matches/:id/finish', (req, res, next) => {
+  matchFactory().finishMatch(req, res, next);
+});
+
 export default routes;
