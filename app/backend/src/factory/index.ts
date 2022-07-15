@@ -3,7 +3,7 @@ import LoginService from '../services/loginService';
 import TeamController from '../controllers/taemController';
 import TeamService from '../services/teamService';
 import MatchContoller from '../controllers/matchContoller';
-import MatchSerice from '../services/matchSerice';
+import MatchSerice from '../services/matchService';
 
 export const loginFactory = () => {
   const loginService = new LoginService();
