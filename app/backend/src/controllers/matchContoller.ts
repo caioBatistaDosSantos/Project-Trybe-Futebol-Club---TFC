@@ -22,4 +22,12 @@ export default class Controller {
 
     return res.status(StatusCodes.CREATED).json(newMatch);
   }
+
+  async finishMatch(req: Request, res: Response, _next: NextFunction) {
+    const { id } = req.params;
+
+    await this.service.finishMatch(id);
+
+    return res.status(StatusCodes.OK).json({ message: 'Finished' });
+  }
 }
