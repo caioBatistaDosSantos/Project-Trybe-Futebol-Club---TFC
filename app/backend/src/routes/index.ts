@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { loginFactory, teamFactory, matchFactory } from '../factory/index';
 import validateToken from '../middlewares/validateToken';
+import validateCreateMatch from '../middlewares/validateCreateMatch';
 
 const routes = Router();
 
@@ -24,7 +25,7 @@ routes.post('/login', (req, res, next) => {
   loginFactory().login(req, res, next);
 });
 
-routes.post('/matches', validateToken, (req, res, next) => {
+routes.post('/matches', validateToken, validateCreateMatch, (req, res, next) => {
   matchFactory().createMatch(req, res, next);
 });
 
