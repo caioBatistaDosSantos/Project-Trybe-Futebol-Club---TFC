@@ -1,6 +1,6 @@
 import MatchesModel from '../database/models/MatchesModel';
 import TeamModel from '../database/models/TeamModel';
-import { IMatches, IService } from '../interfaces/matchInterface';
+import { IMatch, IMatches, IService } from '../interfaces/matchInterface';
 
 export default class Service implements IService {
   constructor(private model = MatchesModel) {
@@ -29,5 +29,11 @@ export default class Service implements IService {
     });
 
     return matches as unknown as IMatches[];
+  }
+
+  async createMatch(data: Omit<IMatch, 'id'>): Promise<IMatch> {
+    const newMatch = await this.model.create(data);
+
+    return newMatch as unknown as IMatch;
   }
 }
