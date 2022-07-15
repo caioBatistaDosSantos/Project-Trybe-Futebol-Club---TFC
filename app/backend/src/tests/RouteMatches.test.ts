@@ -161,7 +161,7 @@ describe('Teste a rota GET "/matches?inProgress=false"', () => {
   });
 });
 
-describe.only('Teste a rota POST "/matches"', () => {
+describe('Teste a rota POST "/matches"', () => {
   const TOKEN = 'TOKEN_FOR_TESTS';
 
   const MATCHES = {
@@ -200,3 +200,25 @@ describe.only('Teste a rota POST "/matches"', () => {
     expect(response.body).to.be.eql(MATCHES)
   });
 });
+
+// describe.only('Teste a rota PATCH "/matches/:id/finish"', () => {
+
+//   const MATCHES = [0];
+
+//   before(() => {
+//     sinon
+//       .stub(MatchesModel, "update")
+//       .resolves(MATCHES as unknown as MatchesModel);
+//   });
+
+//   after(()=>{
+//     (MatchesModel.update as sinon.SinonStub).restore();
+//   });
+
+//   it('Quando o PATCH "/matches/:id/finish" acontece corretamente', async () => {
+//     const response = await chai.request(app).post('/matches');
+
+//     expect(response.status).to.be.equal(StatusCodes.OK);
+//     expect(response.body).to.be.eql(MATCHES)
+//   });
+// });
