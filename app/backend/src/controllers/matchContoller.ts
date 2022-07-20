@@ -23,6 +23,15 @@ export default class Controller {
     return res.status(StatusCodes.CREATED).json(newMatch);
   }
 
+  async updateMatch(req: Request, res: Response, _next: NextFunction) {
+    const { id } = req.params;
+    const data = req.body;
+
+    await this.service.updateMatch(id, data);
+
+    return res.status(StatusCodes.OK).json({ message: 'Successfully updated' });
+  }
+
   async finishMatch(req: Request, res: Response, _next: NextFunction) {
     const { id } = req.params;
 
