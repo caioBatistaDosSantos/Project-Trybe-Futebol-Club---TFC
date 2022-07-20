@@ -29,6 +29,10 @@ routes.post('/matches', validateToken, validateCreateMatch, (req, res, next) => 
   matchFactory().createMatch(req, res, next);
 });
 
+routes.patch('/matches/:id', (req, res, next) => {
+  matchFactory().updateMatch(req, res, next);
+});
+
 routes.patch('/matches/:id/finish', (req, res, next) => {
   matchFactory().finishMatch(req, res, next);
 });
