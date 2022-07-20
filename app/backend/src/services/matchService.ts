@@ -43,8 +43,9 @@ export default class Service implements IService {
     return newMatch as unknown as IMatch;
   }
 
-  async updateMatch(data: Pick<IMatch, 'id' | 'homeTeamGoals' | 'awayTeamGoals'>): Promise<void> {
-    const { id, homeTeamGoals, awayTeamGoals } = data;
+  async updateMatch(id: string, data: Pick<IMatch, | 'homeTeamGoals' | 'awayTeamGoals'>)
+    : Promise<void> {
+    const { homeTeamGoals, awayTeamGoals } = data;
     await this.model.update(
       { homeTeamGoals, awayTeamGoals },
       { where: { id } },
