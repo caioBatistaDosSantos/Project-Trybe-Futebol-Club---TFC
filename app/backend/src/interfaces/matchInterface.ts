@@ -19,5 +19,6 @@ export interface IMatches extends IMatch {
 export interface IService {
   getAllMatches(InProgress: string | undefined): Promise<IMatches[]>;
   createMatch(data: Omit<IMatch, 'id'>): Promise<IMatch>;
+  updateMatch(data: Pick<IMatch, 'homeTeamGoals' | 'awayTeamGoals'>): Promise<void>;
   finishMatch(id: string): Promise<void>;
 }
