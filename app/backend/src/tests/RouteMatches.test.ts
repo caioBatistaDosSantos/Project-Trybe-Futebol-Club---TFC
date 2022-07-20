@@ -272,9 +272,35 @@ describe('Quando o POST "/matches" acontece incorretamente', () => {
 //   });
 
 //   it('Quando o PATCH "/matches/:id/finish" acontece corretamente', async () => {
-//     const response = await chai.request(app).post('/matches');
+//     const response = await chai.request(app).patch('/matches');
 
 //     expect(response.status).to.be.equal(StatusCodes.OK);
 //     expect(response.body).to.be.eql(MATCHES)
+//   });
+// });
+
+// describe.only('Teste a rota PATCH "/matches/:id"', () => {
+
+//   const MATCHES = [0];
+
+//   before(() => {
+//     sinon
+//       .stub(MatchesModel, "update")
+//       .resolves(MATCHES as unknown as MatchesModel);
+//   });
+
+//   after(()=>{
+//     (MatchesModel.update as sinon.SinonStub).restore();
+//   });
+
+//   it('Quando o PATCH "/matches/:id/finish" acontece corretamente', async () => {
+//     const response = await chai.request(app).patch('/matches/:id')
+//     .send({
+//       homeTeamGoals: 2,
+//       awayTeamGoals: 2,
+//     });
+
+//     expect(response.status).to.be.equal(StatusCodes.OK);
+//     expect(response.body).to.be.eql({ message: 'successfully updated' })
 //   });
 // });
