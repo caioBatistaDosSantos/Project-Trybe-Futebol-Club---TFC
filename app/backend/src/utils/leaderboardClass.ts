@@ -56,7 +56,6 @@ export default class LeaderboardAll implements IClassLeaderboard {
     this._data.forEach((ele) => {
       if (ele.homeTeam === this._id) {
         this.caseOfGame(ele.homeTeamGoals, ele.awayTeamGoals);
-
         const isVictoryOrDefeat = ele.homeTeamGoals - ele.awayTeamGoals;
 
         if (isVictoryOrDefeat === 0) {
@@ -77,18 +76,18 @@ export default class LeaderboardAll implements IClassLeaderboard {
   private validateGameInAway() {
     this._data.forEach((ele) => {
       if (ele.awayTeam === this._id) {
+        this.caseOfGame(ele.awayTeamGoals, ele.homeTeamGoals);
         const isVictoryOrDefeat = ele.awayTeamGoals - ele.homeTeamGoals;
 
-        if (isVictoryOrDefeat > 0) {
-          this.caseOfGame(ele.awayTeamGoals, ele.homeTeamGoals);
+        if (isVictoryOrDefeat === 0) {
+          this.caseOfDraws();
+        }
 
-          this._totalGames += 1;
+        if (isVictoryOrDefeat > 0) {
           this.caseOfVictory();
         }
 
         if (isVictoryOrDefeat < 0) {
-          this.caseOfGame(ele.awayTeamGoals, ele.homeTeamGoals);
-
           this.caseOfDefeat();
         }
       }

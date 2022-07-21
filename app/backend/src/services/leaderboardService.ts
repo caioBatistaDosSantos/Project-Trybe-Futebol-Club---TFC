@@ -13,23 +13,10 @@ export default class Service implements IService {
 
   async leaderboardHome(): Promise<ILeaderboard[]> {
     const teams = await this.modelTeams.findAll();
-    const matches = await this.modelMatches.findAll();
+    const matches = await this.modelMatches.findAll({ where: { inProgress: false } });
 
     const leaderbords = teams.map(({ id, teamName }) => {
       const leaderbordTeam = new LeaderboardHome(id, teamName, matches as unknown as IMatch[]);
-
-      return leaderbordTeam.scoreboard();
-    });
-
-    return leaderbords;
-  }
-
-  async leaderboardAll(): Promise<ILeaderboard[]> {
-    const teams = await this.modelTeams.findAll();
-    const matches = await this.modelMatches.findAll();
-
-    const leaderbords = teams.map(({ id, teamName }) => {
-      const leaderbordTeam = new Leaderboard(id, teamName, matches as unknown as IMatch[]);
 
       return leaderbordTeam.scoreboard();
     });
@@ -54,5 +41,39 @@ export default class Service implements IService {
       const byGoalsOwn = next.goalsOwn - prev.goalsOwn;
       return byGoalsOwn;
     });
+  }
+
+  async leaderboardAll(): Promise<ILeaderboard[]> {
+    const teams = await this.modelTeams.findAll();
+    const matches = await this.modelMatches.findAll({ where: { inProgress: false } });
+
+    const leaderbords = teams.map(({ id, teamName }) => {
+      const leaderbordTeam = new Leaderboard(id, teamName, matches as unknown as IMatch[]);
+
+      return leaderbordTeam.scoreboard();
+    });
+
+    return leaderbords;
+
+    // return leaderbords.sort((prev, next) => {
+    //   const byTotalPoints = next.totalPoints - prev.totalPoints;
+
+    //   if (byTotalPoints !== 0) { return byTotalPoints; }
+
+    //   const byTotalWins = next.totalVictories - prev.totalVictories;
+
+    //   if (byTotalWins !== 0) { return byTotalWins; }
+
+    //   const byGoalsBalance = next.goalsBalance - prev.goalsBalance;
+
+    //   if (byGoalsBalance !== 0) { return byGoalsBalance; }
+
+    //   const byGoalsFavor = next.goalsFavor - prev.goalsOwn;
+
+    //   if (byGoalsFavor !== 0) { return byGoalsFavor; }
+
+    //   const byGoalsOwn = next.goalsOwn - prev.goalsOwn;
+    //   return byGoalsOwn;
+    // });
   }
 }
