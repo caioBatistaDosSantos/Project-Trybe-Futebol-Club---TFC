@@ -9,7 +9,7 @@ export default class Service implements IService {
   constructor(
     private modelTeams = TeamModel,
     private modelMatches = MatchesModel,
-    private leaderbords: ILeaderboard[],
+    private leaderbords: ILeaderboard[] = [],
   ) {
     this.modelTeams = modelTeams;
     this.modelMatches = MatchesModel;
