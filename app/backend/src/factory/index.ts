@@ -4,6 +4,8 @@ import TeamController from '../controllers/taemController';
 import TeamService from '../services/teamService';
 import MatchContoller from '../controllers/matchContoller';
 import MatchSerice from '../services/matchService';
+import LeaderboardContoller from '../controllers/leaderboardController';
+import LeaderboardSerice from '../services/leaderboardService';
 
 export const loginFactory = () => {
   const loginService = new LoginService();
@@ -24,4 +26,11 @@ export const matchFactory = () => {
   const matchContoller = new MatchContoller(matchSerice);
 
   return matchContoller;
+};
+
+export const leaderboardFactory = () => {
+  const leaderboardSerice = new LeaderboardSerice();
+  const leaderboardContoller = new LeaderboardContoller(leaderboardSerice);
+
+  return leaderboardContoller;
 };
