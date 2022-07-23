@@ -1,24 +1,26 @@
 import { IClassLeaderboard } from '../interfaces/leaderboardInterface';
 import { IMatch } from '../interfaces/matchInterface';
 
-export default class LeaderboardAll implements IClassLeaderboard {
-  private _id: number; // Time`: Nome do time;
-  private _data: IMatch[]; // Time`: Nome do time;
-  private _name: string; // Time`: Nome do time;
-  private _totalPoints: number; // `P`: Total de Pontos;
-  private _totalGames: number; // `J`: Total de Jogos;
-  private _totalVictories: number; // `V`: Total de Vitórias;
-  private _totalDraws: number; // `E`: Total de Empates;
-  private _totalLosses: number; // `D`: Total de Derrotas;
-  private _goalsFavor: number; // `GP`: Gols marcados a favor;
-  private _goalsOwn: number; // `GC`: Gols sofridos;
-  private _goalsBalance: number; // `SG`: Saldo total de gols;
-  private _efficiency: number; // `%`: Aproveitamento do time.
+export default class LeaderboardClass implements IClassLeaderboard {
+  private _id: number;
+  private _data: IMatch[];
+  private _name: string;
+  private _typeLeaderboard: string;
+  private _totalPoints: number;
+  private _totalGames: number;
+  private _totalVictories: number;
+  private _totalDraws: number;
+  private _totalLosses: number;
+  private _goalsFavor: number;
+  private _goalsOwn: number;
+  private _goalsBalance: number;
+  private _efficiency: number;
 
-  constructor(id: number, name: string, data: IMatch[]) {
+  constructor(id: number, name: string, typeLeaderboard: string, data: IMatch[]) {
     this._id = id;
     this._name = name;
     this._data = data;
+    this._typeLeaderboard = typeLeaderboard;
 
     this._totalPoints = 0;
     this._totalGames = 0;
@@ -94,9 +96,19 @@ export default class LeaderboardAll implements IClassLeaderboard {
     });
   }
 
+  validateTypeLeaderboard() {
+    if (this._typeLeaderboard === 'home') {
+      this.validateGameInHome();
+    } else if (this._typeLeaderboard === 'away') {
+      this.validateGameInAway();
+    } else {
+      this.validateGameInHome();
+      this.validateGameInAway();
+    }
+  }
+
   scoreboard() {
-    this.validateGameInHome();
-    this.validateGameInAway();
+    this.validateTypeLeaderboard();
 
     this._goalsBalance = this._goalsFavor - this._goalsOwn;
 
