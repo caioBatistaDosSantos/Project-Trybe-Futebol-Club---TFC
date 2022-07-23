@@ -9,7 +9,7 @@ import MatchesModel from '../database/models/MatchesModel';
 import TeamModel from '../database/models/TeamModel';
 
 import {
-  MATCHES, TEAMS, LEADERBOARD_ALL, LEADERBOARD_HOME,
+  MATCHES, TEAMS, LEADERBOARD_ALL, LEADERBOARD_HOME, LEADERBOARD_AWAY,
 } from './utilsForTests';
 
 import { Response } from 'superagent';
@@ -48,10 +48,10 @@ describe('Teste as rotas "/leaderboard*"', () => {
     expect(response.body).to.be.eql(LEADERBOARD_HOME)
   });
 
-  it.only('Quando o GET "/leaderboard/away" acontece corretamente', async () => {
+  it('Quando o GET "/leaderboard/away" acontece corretamente', async () => {
     const response = await chai.request(app).get('/leaderboard/away');
 
     expect(response.status).to.be.equal(StatusCodes.OK);
-    expect(response.body).to.be.eql(LEADERBOARD_HOME)
+    expect(response.body).to.be.eql(LEADERBOARD_AWAY)
   });
 });
