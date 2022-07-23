@@ -2,7 +2,6 @@ import TeamModel from '../database/models/TeamModel';
 import MatchesModel from '../database/models/MatchesModel';
 import { ILeaderboard, IService } from '../interfaces/leaderboardInterface';
 import { IMatch } from '../interfaces/matchInterface';
-import LeaderboardHome from '../utils/leaderboardHomeClass';
 import Leaderboard from '../utils/leaderboardClass';
 
 export default class Service implements IService {
@@ -38,14 +37,14 @@ export default class Service implements IService {
     });
   }
 
-  async leaderboardHome(): Promise<ILeaderboard[]> {
+  async getLeaderboardHomeOrAway(type: string): Promise<ILeaderboard[]> {
     const teams = await this.modelTeams.findAll();
     const matches = await this.modelMatches.findAll({ where: { inProgress: false } });
 
     this.leaderbords = teams.map(({ id, teamName }) => {
-      const leaderbordTeam = new LeaderboardHome(id, teamName, matches as unknown as IMatch[]);
+      const leaderbord = new Leaderboard(id, teamName, type, matches as unknown as IMatch[]);
 
-      return leaderbordTeam.scoreboard();
+      return leaderbord.scoreboard();
     });
 
     return this.leaderboardSort();
@@ -56,7 +55,7 @@ export default class Service implements IService {
     const matches = await this.modelMatches.findAll({ where: { inProgress: false } });
 
     this.leaderbords = teams.map(({ id, teamName }) => {
-      const leaderbordTeam = new Leaderboard(id, teamName, matches as unknown as IMatch[]);
+      const leaderbordTeam = new Leaderboard(id, teamName, 'all', matches as unknown as IMatch[]);
 
       return leaderbordTeam.scoreboard();
     });

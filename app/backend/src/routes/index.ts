@@ -30,8 +30,8 @@ routes.get('/leaderboard', (req, res, next) => {
   leaderboardFactory().getLeaderboardAll(req, res, next);
 });
 
-routes.get('/leaderboard/home', (req, res, next) => {
-  leaderboardFactory().getLeaderboardHome(req, res, next);
+routes.get('/leaderboard/:typeLeaderboard', (req, res, next) => {
+  leaderboardFactory().getLeaderboardHomeOrAway(req, res, next);
 });
 
 routes.post('/login', (req, res, next) => {

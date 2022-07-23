@@ -7,8 +7,10 @@ export default class Controller {
     this.service = service;
   }
 
-  async getLeaderboardHome(req: Request, res: Response, _next: NextFunction) {
-    const leaderbords = await this.service.leaderboardHome();
+  async getLeaderboardHomeOrAway(req: Request, res: Response, _next: NextFunction) {
+    const { typeLeaderboard } = req.params;
+
+    const leaderbords = await this.service.getLeaderboardHomeOrAway(typeLeaderboard);
 
     return res.status(StatusCodes.OK).json(leaderbords);
   }
