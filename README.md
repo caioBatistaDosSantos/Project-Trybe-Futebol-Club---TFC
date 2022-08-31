@@ -9,7 +9,7 @@
 - Esta aplicação é coberta por testes de integração utilizando a metodologia TDD (fazendo os testes antes dos requisitos). Para os testes foi utilizado Jest, Mocha e Chai.
 
   - Este projeto foi individual e foram `7` dias de projeto.
-  - `IMPORTANTE: ` Neste projeto o foco do desenvolvimento foi o Back-end, logo o Front-end, docker-compose e estruturação do projeto foram disponibilizados pela Trybe! Meu desenvolvimento foi a partir da pasta `/app/backend`!
+  - `IMPORTANTE: ` Neste projeto, como já temos conhecimentos em React, o foco do desenvolvimento foi o Back-end, logo o Front-end, docker-compose e estruturação do projeto foram disponibilizados pela Trybe! Meu desenvolvimento foi a partir da pasta `/app/backend`!
 
 ---
 
